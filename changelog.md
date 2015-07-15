@@ -2,6 +2,11 @@
 
 ### Changelog ###
 
+### v1.0.2 ###
+
+14 Jul 2015
+
+- \[New Feature] added -Remove Switch to Function Set-DrsVMGroup and Set-DrsVMHostGroup
 ### v1.0.1 ###
 
 30 Jun 2015

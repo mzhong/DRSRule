@@ -685,22 +685,28 @@ Function Set-DrsVMGroup
   [CmdletBinding(SupportsShouldProcess = $True, ConfirmImpact = [System.Management.Automation.Confirmimpact]::Medium)]
   [OutputType([DRSRule.VMGroup])]
   param(
-    [Parameter(Mandatory = $True, Position = 0, ValueFromPipelineByPropertyName=$True)]
+    [Parameter(Mandatory = $True, Position = 0, ValueFromPipelineByPropertyName=$True, ParameterSetName = "Append")]
+    [Parameter(Mandatory = $True, Position = 0, ValueFromPipelineByPropertyName=$True, ParameterSetName = "Remove")]
     [ValidateNotNullOrEmpty()]
     [string]${Name},
-    [Parameter(Mandatory = $True, Position = 1, ValueFromPipelineByPropertyName = $True)]
+    [Parameter(Mandatory = $True, Position = 1, ValueFromPipelineByPropertyName = $True, ParameterSetName = "Append")]
+    [Parameter(Mandatory = $True, Position = 1, ValueFromPipelineByPropertyName = $True, ParameterSetName = "Remove")]
     [ValidateNotNullOrEmpty()][ValidateScript({
       ## make sure that all values are either a String or a Cluster obj
       _Test-TypeOrString -Object $_ -Type ([VMware.VimAutomation.ViCore.Types.V1.Inventory.Cluster])
     })]
     [PSObject[]]${Cluster},
-    [parameter(ValueFromPipeline=$true)]
+    [parameter(ValueFromPipeline=$true, ParameterSetName = "Append")]
+    [parameter(ValueFromPipeline=$true, ParameterSetName = "Remove")]
     [ValidateNotNullOrEmpty()][ValidateScript({
       ## make sure that all values are either a String or a VM obj
       _Test-TypeOrString -Object $_ -Type ([VMware.VimAutomation.ViCore.Types.V1.Inventory.VirtualMachine])
     })]
     [PSObject[]]${VM},
-    [Switch]${Append}
+    [parameter(ParameterSetName = "Append")]
+    [Switch]${Append},
+    [parameter(ParameterSetName = "Remove")]
+    [Switch]${Remove}
   )
 
   Process{
@@ -733,6 +739,19 @@ Function Set-DrsVMGroup
         if(${Append}) {
           $groupSpec.Info.VM += $arrNewMembersIds
         }
+        elseif(${Remove}) {
+          if($groupSpec.Info.VM.length -gt 1) {
+            $arrlstGroupMember = [System.Collections.ArrayList]$groupSpec.Info.VM 
+            foreach ($memberID in $groupSpec.Info.VM ){ 
+                if ( $arrNewMembersIds.Contains($memberID.ToString())) {
+                    $arrlstGroupMember.Remove($memberID)
+                }
+            }
+            $groupSpec.Info.VM = @($arrlstGroupMember) 
+          }else{
+            Throw "DrsVmGroup '$Name' has only one VM, can not remove VM from group."
+          }
+        }
         else {
           $groupSpec.Info.VM = $arrNewMembersIds
         }
@@ -752,10 +771,12 @@ Function Set-DrsVMHostGroup
   [CmdletBinding(SupportsShouldProcess = $True, ConfirmImpact = [System.Management.Automation.Confirmimpact]::Medium)]
   [OutputType([DRSRule.VMHostGroup])]
   param(
-    [Parameter(Mandatory = $True, Position = 0, ValueFromPipelineByPropertyName=$True)]
+    [Parameter(Mandatory = $True, Position = 0, ValueFromPipelineByPropertyName=$True, ParameterSetName = "Append")]
+    [Parameter(Mandatory = $True, Position = 0, ValueFromPipelineByPropertyName=$True, ParameterSetName = "Remove")]
     [ValidateNotNullOrEmpty()]
     [string]${Name},
-    [Parameter(Mandatory = $True, Position = 1, ValueFromPipelineByPropertyName = $True)]
+    [Parameter(Mandatory = $True, Position = 1, ValueFromPipelineByPropertyName = $True, ParameterSetName = "Append")]
+    [Parameter(Mandatory = $True, Position = 1, ValueFromPipelineByPropertyName = $True, ParameterSetName = "Remove")]
     [ValidateNotNullOrEmpty()][ValidateScript({
       ## make sure that all values are either a String or a Cluster obj
       _Test-TypeOrString -Object $_ -Type ([VMware.VimAutomation.ViCore.Types.V1.Inventory.Cluster])
@@ -766,7 +787,10 @@ Function Set-DrsVMHostGroup
       _Test-TypeOrString -Object $_ -Type ([VMware.VimAutomation.ViCore.Types.V1.Inventory.VMHost])
     })]
     [PSObject[]]${VMHost},
-    [Switch]${Append}
+    [parameter(ParameterSetName = "Append")]
+    [Switch]${Append},
+    [parameter(ParameterSetName = "Remove")]
+    [Switch]${Remove}
   )
 
   Process{
@@ -798,6 +822,19 @@ Function Set-DrsVMHostGroup
         $arrNewMembersIds = ${VMHost} | ForEach-Object -Process {$_.Id}
         if(${Append}) {
           $groupSpec.Info.Host += $arrNewMembersIds
+        }
+        elseif(${Remove}) {
+          if($groupSpec.Info.Host.length -gt 1) {
+            $arrlstGroupMember = [System.Collections.ArrayList]$groupSpec.Info.Host 
+            foreach ($memberID in $groupSpec.Info.Host ){ 
+                if ( $arrNewMembersIds.Contains($memberID.ToString())) {
+                    $arrlstGroupMember.Remove($memberID)
+                }
+            }
+            $groupSpec.Info.Host = @($arrlstGroupMember) 
+          }else{
+            Throw "DrsHostGroup '$Name' has only one host, can not remove host from group."
+          }
         }
         else {
           $groupSpec.Info.Host = $arrNewMembersIds

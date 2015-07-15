@@ -3138,7 +3138,7 @@ Performing the operation &quot;Remove DRS rule &apos;testVmToVmRule1&apos;&quot;
 			<command:parameter required="false" variableLength="true" globbing="false" pipelineInput="true (ByValue)" position="named">
 				<maml:name>VM</maml:name>
 				<maml:description>
-					<maml:para>The VM that shall be in the DRS VM group.
+					<maml:para>The VMs that shall be in the DRS VM group.
 The VMs can be specified as strings (their names) or as VirtualMachine objects</maml:para>
 				</maml:description>
 				<command:parameterValue required="true" variableLength="true">PSObject[]</command:parameterValue>
@@ -3146,7 +3146,14 @@ The VMs can be specified as strings (their names) or as VirtualMachine objects</
 			<command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named">
 				<maml:name>Append</maml:name>
 				<maml:description>
-					<maml:para>Switch: append the given VM(s) as members of the DRS VM group ($true), or set them as the only members of the group ($false or not specified)?</maml:para>
+					<maml:para>Switch: append the given VM(s) as members of the DRS VM group ($true), or set them as the only members of the group ($false or not specified)? Can not be used together with the Remove switch</maml:para>
+				</maml:description>
+				<command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
+			</command:parameter>
+			<command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named">
+				<maml:name>Remove</maml:name>
+				<maml:description>
+					<maml:para>Switch: remove the given VM(s) as members of the DRS VM group ($true), or set them as the only members of the group ($false or not specified)? Can not be used together with the Append switch</maml:para>
 				</maml:description>
 				<command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
 			</command:parameter>
@@ -3359,7 +3366,14 @@ The names of the VMHost can be given as strings or as VMHost objects.</maml:para
 			<command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named">
 				<maml:name>Append</maml:name>
 				<maml:description>
-					<maml:para>Switch: append the given VMHosts(s) as members of the DRS VM group ($true), or set them as the only members of the group ($false or not specified)?</maml:para>
+					<maml:para>Switch: append the given VMHosts(s) as members of the DRS VM group ($true), or set them as the only members of the group ($false or not specified)? Cannot be used together with Remove switch</maml:para>
+				</maml:description>
+				<command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
+			</command:parameter>
+			<command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named">
+				<maml:name>Remove</maml:name>
+				<maml:description>
+					<maml:para>Switch: remove the given VMHosts(s) as members of the DRS VM group ($true), or set them as the only members of the group ($false or not specified)? Cannot be used together with Append switch<</maml:para>
 				</maml:description>
 				<command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
 			</command:parameter>

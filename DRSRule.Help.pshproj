@@ -1652,7 +1652,7 @@ Performing the operation "Remove DRS rule 'testVmToVmRule1'" on target "Cluster0
         <CommandParameterSetInfo2 Name="__AllParameterSets" Params="Name Cluster VM Append Verbose Debug ErrorAction WarningAction ErrorVariable WarningVariable OutVariable OutBuffer PipelineVariable WhatIf Confirm" />
       </ParamSets>
       <Syntax>
-        <string>Set-DrsVMGroup [-Name] &lt;String&gt; [-Cluster] &lt;PSObject[]&gt; [-VM &lt;PSObject[]&gt;] [-Append] [-WhatIf] [-Confirm]</string>
+        <string>Set-DrsVMGroup [-Name] &lt;String&gt; [-Cluster] &lt;PSObject[]&gt; [-VM &lt;PSObject[]&gt;] [-Append] [-Remove][-WhatIf] [-Confirm]</string>
       </Syntax>
       <Parameters>
         <ParameterDescription type="String" varLen="false" required="true" dynamic="false" pipeRemaining="false" pipe="false" pipeProp="true" isPos="true" pos="0" globbing="false">
@@ -1699,6 +1699,17 @@ The VMs can be specified as strings (their names) or as VirtualMachine objects</
           </Attributes>
           <Aliases />
           <Description>Switch: append the given VM(s) as members of the DRS VM group ($true), or set them as the only members of the group ($false or not specified)?</Description>
+          <DefaultValue />
+        </ParameterDescription>
+        </ParameterDescription>
+        <ParameterDescription type="SwitchParameter" varLen="false" required="false" dynamic="false" pipeRemaining="false" pipe="false" pipeProp="false" isPos="false" pos="named" globbing="false">
+          <Name>Remove</Name>
+          <Attributes>
+            <string>System.Management.Automation.ParameterAttribute</string>
+            <string>System.Management.Automation.ArgumentTypeConverterAttribute</string>
+          </Attributes>
+          <Aliases />
+          <Description>Switch: remove the given VM(s) as members of the DRS VM group ($true), or set them as the only members of the group ($false or not specified)?</Description>
           <DefaultValue />
         </ParameterDescription>
         <ParameterDescription type="SwitchParameter" varLen="false" required="false" dynamic="false" pipeRemaining="false" pipe="false" pipeProp="false" isPos="false" pos="named" globbing="false">
@@ -1771,7 +1782,7 @@ VM Group 1         Cluster1        False              {VM1,VM2,VM3}</Output>
         <CommandParameterSetInfo2 Name="__AllParameterSets" Params="Name Cluster VMHost Append Verbose Debug ErrorAction WarningAction ErrorVariable WarningVariable OutVariable OutBuffer PipelineVariable WhatIf Confirm" />
       </ParamSets>
       <Syntax>
-        <string>Set-DrsVMHostGroup [-Name] &lt;String&gt; [-Cluster] &lt;PSObject[]&gt; [-VMHost &lt;PSObject[]&gt;] [-Append] [-WhatIf] [-Confirm]</string>
+        <string>Set-DrsVMHostGroup [-Name] &lt;String&gt; [-Cluster] &lt;PSObject[]&gt; [-VMHost &lt;PSObject[]&gt;] [-Append] [-Remove] [-WhatIf] [-Confirm]</string>
       </Syntax>
       <Parameters>
         <ParameterDescription type="String" varLen="false" required="true" dynamic="false" pipeRemaining="false" pipe="false" pipeProp="true" isPos="true" pos="0" globbing="false">
